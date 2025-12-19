@@ -103,10 +103,17 @@ export default function Home() {
         : "bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900"
     }`}>
       {/* Animated Background */}
-      <div className={`fixed inset-0 z-0 ${isDark ? "opacity-30" : "opacity-10"} pointer-events-none`}>
-        <div className={`absolute top-0 left-1/4 w-96 h-96 ${isDark ? "bg-blue-500" : "bg-blue-400"} rounded-full blur-3xl animate-pulse`} />
-        <div className={`absolute bottom-0 right-1/4 w-96 h-96 ${isDark ? "bg-purple-500" : "bg-purple-400"} rounded-full blur-3xl animate-pulse delay-700`} />
-        <div className={`absolute top-1/2 right-0 w-96 h-96 ${isDark ? "bg-cyan-500" : "bg-cyan-400"} rounded-full blur-3xl animate-pulse delay-1000`} />
+      <div className={`fixed inset-0 z-0 pointer-events-none`}>
+        <div className={`absolute top-0 left-1/4 w-96 h-96 ${isDark ? "bg-blue-500" : "bg-blue-300"} rounded-full blur-3xl ${isDark ? "opacity-30 animate-pulse" : "opacity-20 animate-pulse"}`} />
+        <div className={`absolute bottom-0 right-1/4 w-96 h-96 ${isDark ? "bg-purple-500" : "bg-purple-300"} rounded-full blur-3xl ${isDark ? "opacity-30 animate-pulse delay-700" : "opacity-20 animate-pulse delay-700"}`} />
+        <div className={`absolute top-1/2 right-0 w-96 h-96 ${isDark ? "bg-cyan-500" : "bg-cyan-300"} rounded-full blur-3xl ${isDark ? "opacity-30 animate-pulse delay-1000" : "opacity-20 animate-pulse delay-1000"}`} />
+        {!isDark && (
+          <>
+            <div className="absolute top-1/3 left-0 w-72 h-72 bg-blue-200 rounded-full blur-3xl opacity-15 animate-pulse delay-500" />
+            <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-pink-200 rounded-full blur-3xl opacity-15 animate-pulse delay-1000" />
+            <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-10 animate-pulse delay-300" />
+          </>
+        )}
       </div>
 
       {/* Content */}
