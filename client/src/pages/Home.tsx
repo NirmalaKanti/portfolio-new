@@ -92,7 +92,7 @@ export default function Home() {
   const [hoveredGame, setHoveredGame] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-black to-purple-950 text-white overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-black to-cyan-950 text-white overflow-x-hidden">
       {/* Animated Background */}
       <div className="fixed inset-0 z-0 opacity-30 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse" />
