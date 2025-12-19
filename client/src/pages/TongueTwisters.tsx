@@ -67,9 +67,9 @@ export default function TongueTwisters() {
   const isSuccessful = successList.includes(current.id);
 
   const backgrounds = [
-    "from-purple-950 via-black to-purple-900",
-    "from-purple-900 via-black to-purple-950",
-    "from-black via-purple-950 to-black",
+    "from-blue-50 via-white to-blue-50",
+    "from-blue-50 via-gray-50 to-white",
+    "from-white via-blue-50 to-white",
   ];
 
   const recordAttempt = () => {
@@ -113,15 +113,15 @@ export default function TongueTwisters() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-white`}>
+    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-gray-900`}>
       {/* Navigation */}
-      <nav className="sticky top-0 backdrop-blur-xl bg-black/40 border-b border-white/10 px-6 py-4 z-50">
+      <nav className="sticky top-0 backdrop-blur-xl bg-white/80 border-b border-gray-200 px-6 py-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <motion.button
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Back
@@ -133,7 +133,7 @@ export default function TongueTwisters() {
           >
             👅 Tongue Twisters
           </motion.h1>
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-gray-600">
             {currentIndex + 1} / {twisters.length}
           </div>
         </div>

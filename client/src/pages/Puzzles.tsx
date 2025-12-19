@@ -61,9 +61,9 @@ export default function Puzzles() {
 
   // Animated background elements
   const backgrounds = [
-    "from-purple-950 via-black to-purple-900",
-    "from-purple-900 via-black to-purple-950",
-    "from-black via-purple-950 to-black",
+    "from-blue-50 via-white to-blue-50",
+    "from-blue-50 via-gray-50 to-white",
+    "from-white via-blue-50 to-white",
   ];
 
   const handleNext = () => {
@@ -100,15 +100,15 @@ export default function Puzzles() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-white`}>
+    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-gray-900`}>
       {/* Navigation */}
-      <nav className="sticky top-0 backdrop-blur-xl bg-black/40 border-b border-white/10 px-6 py-4 z-50">
+      <nav className="sticky top-0 backdrop-blur-xl bg-white/80 border-b border-gray-200 px-6 py-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <motion.button
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Back
@@ -120,7 +120,7 @@ export default function Puzzles() {
           >
             🧩 Puzzles
           </motion.h1>
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-gray-600">
             {currentIndex + 1} / {puzzles.length}
           </div>
         </div>
@@ -136,12 +136,12 @@ export default function Puzzles() {
             className="mb-8"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-400">Progress</span>
-              <span className="text-sm font-semibold text-blue-400">
+              <span className="text-sm text-gray-600">Progress</span>
+              <span className="text-sm font-semibold text-blue-600">
                 {completed.length} / {puzzles.length} Solved
               </span>
             </div>
-            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-blue-500 to-cyan-500"
                 initial={{ width: 0 }}
@@ -158,7 +158,7 @@ export default function Puzzles() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <Card className="bg-black/40 backdrop-blur-xl border-white/10 p-12 mb-8 relative overflow-hidden">
+            <Card className="bg-white/90 backdrop-blur-xl border border-gray-300 p-12 mb-8 relative overflow-hidden shadow-lg">
               {/* Gradient background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${getDifficultyColor(current.difficulty)} opacity-5`} />
 
