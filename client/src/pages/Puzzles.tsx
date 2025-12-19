@@ -61,9 +61,9 @@ export default function Puzzles() {
 
   // Animated background elements
   const backgrounds = [
-    "from-blue-950 to-blue-900",
-    "from-cyan-950 to-blue-900",
-    "from-slate-900 to-blue-800",
+    "from-purple-950 via-black to-purple-900",
+    "from-purple-900 via-black to-purple-950",
+    "from-black via-purple-950 to-black",
   ];
 
   const handleNext = () => {

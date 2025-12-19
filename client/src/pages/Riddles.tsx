@@ -62,9 +62,9 @@ export default function Riddles() {
   const isSolved = solved.includes(current.id);
 
   const backgrounds = [
-    "from-purple-950 to-purple-900",
-    "from-violet-950 to-purple-900",
-    "from-slate-900 to-purple-800",
+    "from-purple-950 via-black to-purple-900",
+    "from-purple-900 via-black to-purple-950",
+    "from-black via-purple-950 to-black",
   ];
 
   const checkAnswer = () => {

@@ -60,9 +60,9 @@ export default function BrainTeasers() {
   const isSolved = solved.includes(current.id);
 
   const backgrounds = [
-    "from-green-950 to-green-900",
-    "from-emerald-950 to-green-900",
-    "from-slate-900 to-emerald-800",
+    "from-purple-950 via-black to-purple-900",
+    "from-purple-900 via-black to-purple-950",
+    "from-black via-purple-950 to-black",
   ];
 
   const handleNext = () => {
