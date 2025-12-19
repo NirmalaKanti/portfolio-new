@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   Github, 
   Linkedin, 
@@ -12,18 +12,19 @@ import {
   Database,
   ArrowRight,
   Terminal,
-  Cpu
+  Cpu,
+  CheckCircle2,
+  Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 
 // Import generated asset
 import heroBg from '@assets/generated_images/abstract_dark_digital_background_with_neon_gradients.png';
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
     y: 0,
@@ -36,7 +37,7 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.12
     }
   }
 };
@@ -44,114 +45,159 @@ const staggerContainer = {
 const projects = [
   {
     title: "Nebula Dashboard",
-    description: "AI-powered analytics platform for visualizing high-dimensional data streams in real-time.",
+    description: "Real-time analytics platform with AI-powered insights and predictive modeling for enterprise data visualization.",
     tags: ["React", "TypeScript", "D3.js", "WebSockets"],
     link: "#",
-    color: "from-blue-500/20 to-cyan-500/20"
+    color: "from-blue-500/20 to-cyan-500/20",
+    impact: "100K+ Daily Active Users"
   },
   {
     title: "Echo Protocol",
-    description: "Decentralized messaging architecture with end-to-end quantum-resistant encryption.",
+    description: "Decentralized messaging infrastructure with quantum-resistant encryption and blockchain integration.",
     tags: ["Rust", "WASM", "Node.js", "Redis"],
     link: "#",
-    color: "from-purple-500/20 to-pink-500/20"
+    color: "from-purple-500/20 to-pink-500/20",
+    impact: "256-bit Encryption"
   },
   {
-    title: "Vortex UI",
-    description: "A composable design system optimized for performance and accessibility standards.",
-    tags: ["Storybook", "React", "Tailwind", "A11y"],
+    title: "Vortex Design System",
+    description: "Comprehensive component library with 200+ components, complete accessibility compliance, and extensive documentation.",
+    tags: ["Storybook", "React", "Tailwind", "WCAG AAA"],
     link: "#",
-    color: "from-emerald-500/20 to-teal-500/20"
+    color: "from-emerald-500/20 to-teal-500/20",
+    impact: "200+ Components"
   },
   {
-    title: "Zenith Finance",
-    description: "Algorithmic trading bot interface with predictive market modeling capabilities.",
+    title: "Zenith Finance AI",
+    description: "Algorithmic trading platform with machine learning predictions and real-time market analysis.",
     tags: ["Python", "TensorFlow", "FastAPI", "Next.js"],
     link: "#",
-    color: "from-orange-500/20 to-red-500/20"
+    color: "from-orange-500/20 to-red-500/20",
+    impact: "250K CAGR"
   }
 ];
 
-const skills = [
-  { name: "Frontend Architecture", icon: <Layers className="w-4 h-4" /> },
-  { name: "System Design", icon: <Database className="w-4 h-4" /> },
-  { name: "Performance Tuning", icon: <Zap className="w-4 h-4" /> },
-  { name: "Creative Coding", icon: <Code2 className="w-4 h-4" /> },
-  { name: "Command Line", icon: <Terminal className="w-4 h-4" /> },
-  { name: "Machine Learning", icon: <Cpu className="w-4 h-4" /> },
+const expertise = [
+  { 
+    name: "Frontend Architecture", 
+    icon: <Layers className="w-5 h-5" />,
+    description: "Building scalable, maintainable design systems" 
+  },
+  { 
+    name: "Performance Optimization", 
+    icon: <Zap className="w-5 h-5" />,
+    description: "Core Web Vitals excellence" 
+  },
+  { 
+    name: "System Design", 
+    icon: <Database className="w-5 h-5" />,
+    description: "Cloud-native architecture" 
+  },
+  { 
+    name: "Full-Stack Development", 
+    icon: <Code2 className="w-5 h-5" />,
+    description: "End-to-end product delivery" 
+  },
+  { 
+    name: "DevOps & Infrastructure", 
+    icon: <Terminal className="w-5 h-5" />,
+    description: "Kubernetes, CI/CD, cloud platforms" 
+  },
+  { 
+    name: "AI/ML Integration", 
+    icon: <Cpu className="w-5 h-5" />,
+    description: "LLM integration & ML pipelines" 
+  },
+];
+
+const achievements = [
+  { metric: "24+", label: "Projects Shipped", icon: "📦" },
+  { metric: "50M+", label: "Users Impacted", icon: "👥" },
+  { metric: "8yr", label: "Experience", icon: "⚡" },
+  { metric: "100%", label: "Client Satisfaction", icon: "⭐" },
 ];
 
 export default function Home() {
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, -150]);
+  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-primary/30">
       
       {/* Background Elements */}
-      <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
+      <div className="fixed inset-0 z-0 opacity-30 pointer-events-none">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroBg})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/80 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 glass border-b border-white/5 px-6 py-4">
+      <nav className="fixed top-0 w-full z-50 glass border-b border-white/5 px-6 py-4 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-xl font-bold font-display tracking-tight"
+            className="text-lg font-bold font-display tracking-tight"
           >
-            DEV<span className="text-primary">.PORTFOLIO</span>
+            ALEX<span className="text-primary">.</span>DEV
           </motion.div>
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex gap-6"
+            className="flex gap-6 items-center"
           >
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors"><Github className="w-5 h-5" /></a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors"><Twitter className="w-5 h-5" /></a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors"><Linkedin className="w-5 h-5" /></a>
+            <a href="#work" className="text-sm hover:text-primary transition-colors">Work</a>
+            <a href="#about" className="text-sm hover:text-primary transition-colors">About</a>
+            <a href="#contact" className="text-sm hover:text-primary transition-colors">Contact</a>
+            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors p-2 hover:bg-white/5 rounded-lg"><Github className="w-4 h-4" /></a>
           </motion.div>
         </div>
       </nav>
 
       {/* Hero Section */}
       <section className="relative z-10 min-h-screen flex items-center justify-center px-6 pt-20">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-16 items-center">
           <motion.div 
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
             className="space-y-8"
           >
-            <motion.div variants={fadeIn}>
-              <Badge variant="outline" className="glass border-primary/30 text-primary px-4 py-1 mb-4">
-                Available for hire
-              </Badge>
-              <h1 className="text-5xl md:text-7xl font-bold font-display leading-tight tracking-tighter">
-                Crafting <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/40">
-                  Digital Reality
+            <motion.div variants={fadeInUp}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-sm font-mono text-primary">Available for Projects</span>
+              </div>
+              <h1 className="text-6xl md:text-7xl font-bold font-display leading-tight tracking-tighter">
+                Creative <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                  Developer
                 </span>
               </h1>
             </motion.div>
             
-            <motion.p variants={fadeIn} className="text-lg text-muted-foreground max-w-md leading-relaxed">
-              I'm a full-stack design engineer specializing in building exceptional digital experiences. 
-              I merge technical depth with visual artistry.
+            <motion.p variants={fadeInUp} className="text-lg text-muted-foreground max-w-xl leading-relaxed font-light">
+              I craft exceptional digital experiences by combining technical expertise with thoughtful design. 
+              Specializing in scalable architectures, performance optimization, and AI-integrated applications.
             </motion.p>
 
-            <motion.div variants={fadeIn} className="flex gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white border-0 shadow-lg shadow-primary/20">
-                View Projects
+            <motion.div variants={fadeInUp} className="flex flex-wrap gap-3 pt-4">
+              {["React", "TypeScript", "Node.js", "AI/ML"].map((tech) => (
+                <span key={tech} className="px-4 py-2 text-sm font-mono rounded-full bg-white/5 border border-white/10 hover:border-primary/50 transition-colors">
+                  {tech}
+                </span>
+              ))}
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="flex gap-4 pt-6">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white border-0 shadow-lg shadow-primary/20 font-semibold">
+                View My Work
               </Button>
-              <Button size="lg" variant="outline" className="glass hover:bg-white/10 border-white/10">
-                Contact Me
+              <Button size="lg" variant="outline" className="glass hover:bg-white/10 border-white/10 font-semibold">
+                Get in Touch
               </Button>
             </motion.div>
           </motion.div>
@@ -160,77 +206,116 @@ export default function Home() {
             style={{ y: y2 }}
             className="hidden md:block relative"
           >
-            {/* Abstract visual representation of code/structure */}
-            <div className="relative w-full aspect-square rounded-full border border-white/10 bg-white/5 backdrop-blur-sm p-8 flex items-center justify-center animate-spin-slow" style={{ animationDuration: '20s' }}>
-              <div className="absolute inset-0 rounded-full border border-white/5 border-dashed" />
-              <div className="w-3/4 h-3/4 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center justify-center">
-                 <div className="w-1/2 h-1/2 rounded-full bg-gradient-to-tr from-primary to-blue-600 blur-2xl opacity-60" />
+            {/* Sophisticated geometric animation */}
+            <div className="relative w-full aspect-square">
+              <motion.div 
+                className="absolute inset-0 rounded-3xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-xl"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div 
+                className="absolute inset-8 rounded-2xl border border-purple-500/20 bg-white/5 backdrop-blur-md"
+                animate={{ rotate: -360 }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div
+                  animate={{ y: [0, 20, 0] }}
+                  transition={{ repeat: Infinity, duration: 4 }}
+                  className="text-6xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400"
+                >
+                  10X
+                </motion.div>
               </div>
             </div>
             
+            {/* Stats cards */}
             <motion.div 
-              className="absolute -bottom-10 -left-10 glass-card p-4 rounded-xl flex items-center gap-3 w-48"
+              className="absolute -bottom-6 -left-6 glass-card p-5 rounded-xl flex items-center gap-3 w-56"
               initial={{ x: -50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
+              whileHover={{ scale: 1.05 }}
             >
-              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
-                <Code2 className="w-5 h-5" />
-              </div>
+              <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
               <div>
-                <div className="text-xs text-muted-foreground">Projects</div>
-                <div className="font-bold">24+ Shipped</div>
+                <div className="text-xs text-muted-foreground font-mono">Success Rate</div>
+                <div className="font-bold text-lg">99.8%</div>
               </div>
             </motion.div>
 
             <motion.div 
-              className="absolute top-10 -right-10 glass-card p-4 rounded-xl flex items-center gap-3 w-48"
+              className="absolute top-0 -right-6 glass-card p-5 rounded-xl flex items-center gap-3 w-56"
               initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.7 }}
+              whileHover={{ scale: 1.05 }}
             >
-              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
-                <Zap className="w-5 h-5" />
-              </div>
+              <Sparkles className="w-5 h-5 text-yellow-400 flex-shrink-0" />
               <div>
-                <div className="text-xs text-muted-foreground">Performance</div>
-                <div className="font-bold">100% Optimized</div>
+                <div className="text-xs text-muted-foreground font-mono">Average Rating</div>
+                <div className="font-bold text-lg">4.9/5.0</div>
               </div>
             </motion.div>
           </motion.div>
         </div>
-        
-        <motion.div 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <ArrowRight className="w-4 h-4 rotate-90" />
-        </motion.div>
       </section>
 
-      {/* Skills Section */}
-      <section className="relative z-10 py-24 border-t border-white/5 bg-background/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold font-display mb-4">Tech Stack & Expertise</h2>
-            <p className="text-muted-foreground">The tools I use to create the extraordinary.</p>
+      {/* Achievements Section */}
+      <section className="relative z-10 py-20 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {achievements.map((item, i) => (
+              <motion.div
+                key={item.metric}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-3xl mb-2">{item.icon}</div>
+                <div className="text-4xl font-bold font-display mb-2">{item.metric}</div>
+                <div className="text-sm text-muted-foreground">{item.label}</div>
+              </motion.div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-            {skills.map((skill, i) => (
-              <motion.div 
+      {/* Expertise Section */}
+      <section id="about" className="relative z-10 py-32 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">Core Expertise</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+              Deep technical knowledge across modern web technologies and emerging AI/ML frameworks.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {expertise.map((skill, i) => (
+              <motion.div
                 key={skill.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
               >
-                <Badge variant="secondary" className="px-4 py-2 text-sm gap-2 hover:bg-primary/20 transition-colors cursor-default border border-white/5">
-                  {skill.icon}
-                  {skill.name}
-                </Badge>
+                <Card className="bg-black/40 backdrop-blur-xl border-white/10 hover:border-primary/50 transition-all duration-300 h-full group cursor-pointer">
+                  <CardHeader>
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors">
+                      {skill.icon}
+                    </div>
+                    <CardTitle className="text-xl font-display">{skill.name}</CardTitle>
+                    <CardDescription className="text-base mt-2">{skill.description}</CardDescription>
+                  </CardHeader>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -238,21 +323,21 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section className="relative z-10 py-32 px-6">
+      <section id="work" className="relative z-10 py-32 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-            <div>
-              <h2 className="text-4xl font-bold font-display mb-4">Selected Works</h2>
-              <p className="text-muted-foreground max-w-lg">
-                A collection of projects that push the boundaries of performance and design.
-              </p>
-            </div>
-            <Button variant="ghost" className="gap-2 group">
-              View All Projects <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">Featured Projects</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+              Showcasing selected works that demonstrate technical depth and design excellence.
+            </p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6">
             {projects.map((project, i) => (
               <motion.div
                 key={project.title}
@@ -260,23 +345,44 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
+                onMouseEnter={() => setHoveredProject(project.title)}
+                onMouseLeave={() => setHoveredProject(null)}
                 className="group"
               >
-                <Card className="bg-black/40 backdrop-blur-xl border-white/10 overflow-hidden hover:border-primary/50 transition-colors duration-500 h-full flex flex-col">
-                  <div className={`h-48 bg-gradient-to-br ${project.color} opacity-20 group-hover:opacity-30 transition-opacity`} />
+                <Card className="bg-black/40 backdrop-blur-xl border-white/10 overflow-hidden hover:border-primary/50 transition-all duration-500 h-full flex flex-col hover:shadow-2xl hover:shadow-primary/10">
+                  <div className={`h-56 bg-gradient-to-br ${project.color} opacity-30 group-hover:opacity-50 transition-opacity duration-500 relative overflow-hidden`}>
+                    <motion.div
+                      animate={{ 
+                        rotate: hoveredProject === project.title ? 360 : 0,
+                        scale: hoveredProject === project.title ? 1.1 : 1
+                      }}
+                      transition={{ duration: 0.6 }}
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    />
+                  </div>
                   <CardHeader>
-                    <CardTitle className="font-display text-2xl group-hover:text-primary transition-colors flex items-center justify-between">
-                      {project.title}
-                      <ExternalLink className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </CardTitle>
-                    <CardDescription className="text-base mt-2">
+                    <div className="flex items-start justify-between mb-3">
+                      <CardTitle className="font-display text-2xl group-hover:text-primary transition-colors">
+                        {project.title}
+                      </CardTitle>
+                      <motion.div
+                        animate={{ x: hoveredProject === project.title ? 5 : 0 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                      </motion.div>
+                    </div>
+                    <CardDescription className="text-base leading-relaxed">
                       {project.description}
                     </CardDescription>
+                    <div className="mt-4 text-sm font-semibold text-primary">
+                      {project.impact}
+                    </div>
                   </CardHeader>
                   <CardContent className="mt-auto">
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map(tag => (
-                        <span key={tag} className="text-xs font-mono text-muted-foreground bg-white/5 px-2 py-1 rounded">
+                        <span key={tag} className="text-xs font-mono text-muted-foreground bg-white/5 px-3 py-1 rounded-full border border-white/5 group-hover:border-primary/30 transition-colors">
                           {tag}
                         </span>
                       ))}
@@ -289,25 +395,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="relative z-10 py-32 px-6 border-t border-white/5">
+      {/* CTA Section */}
+      <section id="contact" className="relative z-10 py-32 px-6 border-t border-white/5">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="glass-card p-12 rounded-3xl"
+            className="glass-card p-16 rounded-3xl border-white/10 backdrop-blur-2xl"
           >
-            <h2 className="text-4xl md:text-5xl font-bold font-display mb-6">Let's Build Together</h2>
-            <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-              I'm currently open to new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+            <h2 className="text-5xl md:text-6xl font-bold font-display mb-6 leading-tight">
+              Let's Create <br /> Something <span className="text-primary">Extraordinary</span>
+            </h2>
+            <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+              Ready to elevate your digital presence? Let's collaborate to build products that users love.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white min-w-[200px]">
-                <Mail className="mr-2 w-4 h-4" /> Say Hello
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 shadow-lg shadow-primary/30">
+                <Mail className="mr-2 w-4 h-4" /> hello@alex.dev
               </Button>
-              <Button size="lg" variant="outline" className="glass hover:bg-white/10 border-white/10 min-w-[200px]">
-                Download Resume
+              <Button size="lg" variant="outline" className="glass hover:bg-white/10 border-white/10 font-semibold px-8">
+                Schedule Call
               </Button>
             </div>
           </motion.div>
@@ -315,8 +423,16 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-8 text-center text-sm text-muted-foreground border-t border-white/5">
-        <p>© 2025 Creative Developer Portfolio. Crafted with React & Tailwind.</p>
+      <footer className="relative z-10 py-12 text-center text-sm text-muted-foreground border-t border-white/5 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-center gap-8 mb-6">
+            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">GitHub</a>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">LinkedIn</a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">Twitter</a>
+            <a href="mailto:hello@alex.dev" className="hover:text-primary transition-colors">Email</a>
+          </div>
+          <p>© 2025 Alex Chen. Crafted with React, TypeScript & Tailwind CSS.</p>
+        </div>
       </footer>
     </div>
   );
