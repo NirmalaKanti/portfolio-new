@@ -74,6 +74,12 @@ export default function Trivia() {
 
   const current = triviaQuestions[currentIndex];
 
+  const backgrounds = [
+    "from-indigo-950 to-indigo-900",
+    "from-violet-950 to-indigo-900",
+    "from-slate-900 to-indigo-800",
+  ];
+
   const handleAnswer = (index: number) => {
     if (!answered) {
       setSelected(index);
@@ -105,7 +111,7 @@ export default function Trivia() {
   const percentage = Math.round((score / triviaQuestions.length) * 100);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-900/20 to-slate-950 text-white">
+    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-white`}>
       {/* Navigation */}
       <nav className="sticky top-0 backdrop-blur-xl bg-black/40 border-b border-white/10 px-6 py-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

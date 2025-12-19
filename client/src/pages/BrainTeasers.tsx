@@ -59,6 +59,12 @@ export default function BrainTeasers() {
   const current = teasers[currentIndex];
   const isSolved = solved.includes(current.id);
 
+  const backgrounds = [
+    "from-green-950 to-green-900",
+    "from-emerald-950 to-green-900",
+    "from-slate-900 to-emerald-800",
+  ];
+
   const handleNext = () => {
     if (currentIndex < teasers.length - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -94,7 +100,7 @@ export default function BrainTeasers() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-emerald-900/20 to-slate-950 text-white">
+    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-white`}>
       {/* Navigation */}
       <nav className="sticky top-0 backdrop-blur-xl bg-black/40 border-b border-white/10 px-6 py-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

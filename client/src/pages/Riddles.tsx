@@ -61,6 +61,12 @@ export default function Riddles() {
   const current = riddles[currentIndex];
   const isSolved = solved.includes(current.id);
 
+  const backgrounds = [
+    "from-purple-950 to-purple-900",
+    "from-violet-950 to-purple-900",
+    "from-slate-900 to-purple-800",
+  ];
+
   const checkAnswer = () => {
     if (inputValue.toLowerCase().includes(current.answer.toLowerCase().split("(")[0].trim())) {
       setSolved([...solved, current.id]);
@@ -94,7 +100,7 @@ export default function Riddles() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900/20 to-slate-950 text-white">
+    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-white`}>
       {/* Navigation */}
       <nav className="sticky top-0 backdrop-blur-xl bg-black/40 border-b border-white/10 px-6 py-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

@@ -66,6 +66,12 @@ export default function TongueTwisters() {
   const attempts = attemptCounts[current.id] || 0;
   const isSuccessful = successList.includes(current.id);
 
+  const backgrounds = [
+    "from-red-950 to-red-900",
+    "from-rose-950 to-red-900",
+    "from-slate-900 to-rose-800",
+  ];
+
   const recordAttempt = () => {
     setAttemptCounts({
       ...attemptCounts,
@@ -107,7 +113,7 @@ export default function TongueTwisters() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-red-900/20 to-slate-950 text-white">
+    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-white`}>
       {/* Navigation */}
       <nav className="sticky top-0 backdrop-blur-xl bg-black/40 border-b border-white/10 px-6 py-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

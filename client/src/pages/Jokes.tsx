@@ -65,6 +65,12 @@ export default function Jokes() {
   const current = jokes[currentIndex];
   const isFavorited = favorites.includes(current.id);
 
+  const backgrounds = [
+    "from-orange-950 to-orange-900",
+    "from-amber-950 to-orange-900",
+    "from-slate-900 to-orange-800",
+  ];
+
   const handleNext = () => {
     if (currentIndex < jokes.length - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -88,7 +94,7 @@ export default function Jokes() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-orange-900/20 to-slate-950 text-white">
+    <div className={`min-h-screen bg-gradient-to-br ${backgrounds[currentIndex % backgrounds.length]} text-white`}>
       {/* Navigation */}
       <nav className="sticky top-0 backdrop-blur-xl bg-black/40 border-b border-white/10 px-6 py-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
