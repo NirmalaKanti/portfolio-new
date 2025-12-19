@@ -12,7 +12,10 @@ import {
   Sparkles,
   ArrowRight,
   Trophy,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 const games = [
   {
@@ -54,10 +57,10 @@ const games = [
   {
     id: "tongue-twisters",
     title: "👅 Tongue Twisters",
-    description: "Try to say these without stuttering",
+    description: "Master tricky tongue twisters and test pronunciation",
     icon: Gamepad2,
-    color: "from-red-500 to-rose-500",
-    bgColor: "from-red-500/20 to-rose-500/20",
+    color: "from-red-500 to-pink-500",
+    bgColor: "from-red-500/20 to-pink-500/20",
     hoverColor: "hover:shadow-red-500/50",
   },
   {
@@ -90,20 +93,30 @@ const cardVariants = {
 export default function Home() {
   const [, navigate] = useLocation();
   const [hoveredGame, setHoveredGame] = useState<string | null>(null);
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900 overflow-x-hidden">
+    <div className={`min-h-screen overflow-x-hidden transition-colors duration-300 ${
+      isDark 
+        ? "bg-gradient-to-br from-blue-950 via-black to-cyan-950 text-white" 
+        : "bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900"
+    }`}>
       {/* Animated Background */}
-      <div className="fixed inset-0 z-0 opacity-10 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400 rounded-full blur-3xl animate-pulse delay-700" />
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-cyan-400 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className={`fixed inset-0 z-0 ${isDark ? "opacity-30" : "opacity-10"} pointer-events-none`}>
+        <div className={`absolute top-0 left-1/4 w-96 h-96 ${isDark ? "bg-blue-500" : "bg-blue-400"} rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute bottom-0 right-1/4 w-96 h-96 ${isDark ? "bg-purple-500" : "bg-purple-400"} rounded-full blur-3xl animate-pulse delay-700`} />
+        <div className={`absolute top-1/2 right-0 w-96 h-96 ${isDark ? "bg-cyan-500" : "bg-cyan-400"} rounded-full blur-3xl animate-pulse delay-1000`} />
       </div>
 
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
-        <nav className="sticky top-0 backdrop-blur-xl bg-white/80 border-b border-gray-200 px-6 py-4 z-50">
+        <nav className={`sticky top-0 backdrop-blur-xl transition-colors duration-300 ${
+          isDark 
+            ? "bg-black/40 border-b border-white/10" 
+            : "bg-white/80 border-b border-gray-200"
+        } px-6 py-4 z-50`}>
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -122,8 +135,19 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center gap-6"
             >
-              <span className="text-sm text-gray-600">Fun & Brain Workouts</span>
+              <span className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>Fun & Brain Workouts</span>
               <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+              <button
+                onClick={toggleTheme}
+                className={`p-2 rounded-lg transition-colors ${
+                  isDark
+                    ? "bg-white/10 hover:bg-white/20 text-yellow-400"
+                    : "bg-gray-200 hover:bg-gray-300 text-gray-700"
+                }`}
+                data-testid="button-theme-toggle"
+              >
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
             </motion.div>
           </div>
         </nav>
@@ -137,7 +161,11 @@ export default function Home() {
               className="text-center mb-20"
             >
               <div className="inline-block mb-6">
-                <span className="px-4 py-2 rounded-full bg-blue-100 border border-blue-300 text-sm font-semibold text-blue-700 flex items-center gap-2 w-fit mx-auto">
+                <span className={`px-4 py-2 rounded-full border text-sm font-semibold flex items-center gap-2 w-fit mx-auto transition-colors ${
+                  isDark
+                    ? "bg-blue-500/20 border-blue-500/50 text-blue-300"
+                    : "bg-blue-100 border-blue-300 text-blue-700"
+                }`}>
                   <Sparkles className="w-4 h-4" />
                   Welcome to the Fun Zone
                 </span>
@@ -147,7 +175,9 @@ export default function Home() {
                   Unlock Your Inner Genius
                 </span>
               </h1>
-              <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-10 leading-relaxed">
+              <p className={`text-xl max-w-2xl mx-auto mb-10 leading-relaxed transition-colors ${
+                isDark ? "text-gray-400" : "text-gray-700"
+              }`}>
                 Challenge yourself with puzzles, riddles, jokes, brain teasers, and more. Have fun while sharpening your mind!
               </p>
               <motion.div
@@ -177,19 +207,24 @@ export default function Home() {
                     onClick={() => navigate(`/${game.id}`)}
                   >
                     <Card
-                      className={`relative overflow-hidden cursor-pointer group bg-white backdrop-blur-xl border border-gray-200 hover:border-gray-300 transition-all duration-300 h-full shadow-lg hover:shadow-xl`}
+                      className={`relative overflow-hidden cursor-pointer group backdrop-blur-xl transition-all duration-300 h-full shadow-lg hover:shadow-xl ${
+                        isDark
+                          ? "bg-black/40 border border-white/10 hover:border-white/30"
+                          : "bg-white border border-gray-200 hover:border-gray-300"
+                      }`}
                     >
                       {/* Animated gradient background */}
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${game.bgColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                        className={`absolute inset-0 bg-gradient-to-br ${game.bgColor} ${isDark ? "opacity-0 group-hover:opacity-20" : "opacity-0 group-hover:opacity-10"} transition-opacity duration-300`}
                       />
 
                       {/* Shine effect */}
                       <div
                         className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
                         style={{
-                          background:
-                            "linear-gradient(45deg, transparent 30%, white 50%, transparent 70%)",
+                          background: isDark
+                            ? "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)"
+                            : "linear-gradient(45deg, transparent 30%, white 50%, transparent 70%)",
                           transform: hoveredGame === game.id ? "translateX(100%)" : "translateX(-100%)",
                           transition: "transform 0.5s ease-in-out",
                         }}
@@ -204,10 +239,10 @@ export default function Home() {
                           <Icon className="w-8 h-8 text-white" />
                         </motion.div>
 
-                        <h2 className="text-2xl font-bold mb-3 text-gray-900 transition-colors">
+                        <h2 className={`text-2xl font-bold mb-3 transition-colors ${isDark ? "text-white" : "text-gray-900"}`}>
                           {game.title}
                         </h2>
-                        <p className="text-gray-600 mb-8 flex-grow">{game.description}</p>
+                        <p className={`mb-8 flex-grow transition-colors ${isDark ? "text-gray-400" : "text-gray-600"}`}>{game.description}</p>
 
                         <motion.div
                           animate={{
@@ -232,7 +267,9 @@ export default function Home() {
         </section>
 
         {/* Stats Section */}
-        <section className="px-6 py-20 border-t border-gray-200">
+        <section className={`px-6 py-20 border-t transition-colors ${
+          isDark ? "border-white/10" : "border-gray-200"
+        }`}>
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -256,7 +293,7 @@ export default function Home() {
                   <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                     {stat.number}
                   </div>
-                  <div className="text-gray-600">{stat.label}</div>
+                  <div className={`transition-colors ${isDark ? "text-gray-400" : "text-gray-600"}`}>{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -264,7 +301,9 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="px-6 py-12 border-t border-gray-200 text-center text-gray-600">
+        <footer className={`px-6 py-12 border-t transition-colors ${
+          isDark ? "border-white/10 text-gray-400" : "border-gray-200 text-gray-600"
+        } text-center`}>
           <p>Made with 💜 for fun & learning</p>
         </footer>
       </div>
